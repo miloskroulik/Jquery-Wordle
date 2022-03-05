@@ -1,0 +1,208 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
+:root{
+    --black: #0e0e0e;
+    --nero: #1c1c1c;
+    --charcoal: #4a4a4a;
+    --dim-gray: #6d6d6d;
+    --gainsboro: #e6e6e6;
+
+    --correct: #0fff5f7f;
+    --middle: #ffff007f;
+    --wrong: #4a4a4aae;
+}
+*{
+    font-family: 'Roboto', sans-serif;
+}
+body{
+    background-color: var(--nero);
+}
+
+.container{
+    display: grid;
+    justify-content: center;
+    margin: 50px 0;
+}
+.container > .row{
+    margin: 2.5px 0;
+}
+.container > .row > div{
+    width: 50px;
+    height: 50px;
+    background-color: var(--nero);
+    border: 2px solid var(--charcoal);
+    border-radius: 2px;
+    display: inline-block;
+    position: relative;
+}
+/* .container > .row > div:first-child{
+    background-color: var(--correct);
+    border-color: transparent;
+}
+.container > .row > div:nth-child(2){
+    background-color: var(--middle);
+    border-color: transparent;
+}
+.container > .row > div:nth-child(3){
+    background-color: var(--wrong);
+} */
+.container > .row > div > span{
+    position: absolute;
+    font-weight: 900;
+    color: var(--gainsboro);
+
+    display: grid;
+    align-items: center;
+    
+    width: 50px;
+    height: 50px;
+    text-align: center;
+
+    font-size: 25px;
+}
+
+.keyboard{
+    display: flex;
+    flex-direction: column;
+}
+.keyboard > .row{
+    display: flex;
+    justify-content: center;
+}
+.keyboard > .row > div{
+    width: 50px;
+    height: 60px;
+    border-radius: 5px;
+    margin: 4px 2px;
+
+    font-weight: 900;
+    color: var(--nero);
+
+    background-color: var(--dim-gray);
+    transition: .4s;
+
+    display: grid;
+    align-items: center;
+    justify-items: center;
+
+    cursor: pointer;
+    user-select: none;
+}
+.keyboard > .row > div:hover{
+    background-color: var(--gainsboro);
+}
+.keyboard > .row > .command{
+    width: 70px;
+}
+
+.stats{
+    width: 40vw;
+    height: 90vh;
+    background-color: var(--black);
+
+    position: fixed;
+    top: calc(50% - 45vh);
+    left: calc(50% - 20vw);
+
+    border-radius: 10px;
+    z-index: 5;
+    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+
+    color: var(--gainsboro);
+    text-align: center;
+}
+.stats > h1{
+    font-weight: 900;
+    font-size: 40px;
+}
+.stats > p{
+    font-weight: 100;
+    font-size: 20px;
+    width: 80%;
+    margin: 0 auto;
+}
+.stats > .hr{
+    width: 60%;
+    height: 1px;
+    outline: none;
+    background-color: var(--gainsboro);
+    margin: 20px auto;
+    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+}
+.stats > button{
+    background-color: #469c46;
+    padding: 10px 20px;
+    margin: 15px 0;
+    border: thin solid #8af08a;
+    border-radius: 5px;
+    color: var(--gainsboro);
+    font-weight: 900;
+    cursor: pointer;
+    transition: .4s;
+}
+.stats > button:hover{
+    background-color: #245a24;
+    border: thin solid #8af08a6d;
+}
+.stats > .emotes{
+    width: 70%;
+    
+    position: relative;
+    display: grid;
+    justify-content: center;
+    justify-items: center;
+    align-content: center;
+    align-items: center;
+
+    margin: 0 auto;
+}
+.stats > .emotes > span > div{
+    width: 50px;
+    height: 50px;
+    display: inline-block;
+
+    background-color: var(--correct);
+    border-radius: 5px;
+}
+.stats > .close{
+    width: 50px;
+    height: 50px;
+
+    position: absolute;
+    top: 0;
+    right: 0;
+
+    cursor: pointer;
+}
+.stats > .close > div{
+    height: 50%;
+    width: 1px;
+    background-color: var(--gainsboro);
+    position: absolute;
+    top: 25%;
+    right: 50%;
+
+    transform: rotate(45deg);
+    transition: .4s;
+}
+.stats > .close > div:last-child{
+    transform: rotate(-45deg);
+}
+.stats > .close:hover > div{
+    background-color: var(--dim-gray);
+}
+.wrapper{
+    width: 100vw;
+    height: 100vh;
+    background-color: #00000074;
+
+    position: fixed;
+    top: 0;
+    left: 0;
+    
+    z-index: 4;
+}
+.result{
+    display: none;
+    transition: .5s;
+}
