@@ -16,6 +16,8 @@
 }
 body{
     background-color: var(--nero);
+    white-space: normal;
+    overflow-wrap: break-word;
 }
 
 .container{
@@ -35,17 +37,6 @@ body{
     display: inline-block;
     position: relative;
 }
-/* .container > .row > div:first-child{
-    background-color: var(--correct);
-    border-color: transparent;
-}
-.container > .row > div:nth-child(2){
-    background-color: var(--middle);
-    border-color: transparent;
-}
-.container > .row > div:nth-child(3){
-    background-color: var(--wrong);
-} */
 .container > .row > div > span{
     position: absolute;
     font-weight: 900;
@@ -97,12 +88,9 @@ body{
 
 .stats{
     width: 40vw;
-    height: 90vh;
     background-color: var(--black);
 
-    position: fixed;
-    top: calc(50% - 45vh);
-    left: calc(50% - 20vw);
+    position: absolute;
 
     border-radius: 10px;
     z-index: 5;
@@ -110,15 +98,25 @@ body{
 
     color: var(--gainsboro);
     text-align: center;
+
+    display: grid;
+    align-content: center;
+    align-self: center;
+    justify-content: center;
+    justify-items: center;
+
+    padding: 30px 0;
 }
 .stats > h1{
+    max-width: 75%;
+    font-size: 28px;
     font-weight: 900;
-    font-size: 40px;
+    margin: 10px 0;
 }
 .stats > p{
     font-weight: 100;
-    font-size: 20px;
-    width: 80%;
+    font-size: 17px;
+    width: 70%;
     margin: 0 auto;
 }
 .stats > .hr{
@@ -157,8 +155,8 @@ body{
     margin: 0 auto;
 }
 .stats > .emotes > span > div{
-    width: 50px;
-    height: 50px;
+    width: 35px;
+    height: 35px;
     display: inline-block;
 
     background-color: var(--correct);
@@ -200,9 +198,38 @@ body{
     top: 0;
     left: 0;
     
-    z-index: 4;
+    display: grid;
+    justify-content: center;
+    justify-items: center;
+}
+
+#clipboard{
+    position: absolute;
+    transform: translateX(500vw);
+}
+
+@media (max-width: 800px){
+    .stats{
+        width: 90vw;
+    }
+}
+@media (max-width: 305px){
+    .stats{
+        width: 97vw;
+    }
+    .stats > h1{
+        max-width: 60%;
+        font-size: 18px;
+    }
+    .stats > p {
+        max-width: 50%;
+        font-size: 10px;
+    }
+    .stats > .emotes > span > div{
+        width: 20px;
+        height: 20px;
+    }
 }
 .result{
     display: none;
-    transition: .5s;
 }

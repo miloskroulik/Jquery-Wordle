@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Wordle - A Word Game</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://kit.fontawesome.com/0beb279be2.js" crossorigin="anonymous"></script>
 </head>
@@ -140,56 +140,58 @@
         </div>
     </div>
 
-    <div class="wrapper result"></div>
-    <div class="stats result">
-        <div class="close" onclick="closeResult()">
-            <div></div>
-            <div></div>
+    <div class="wrapper result">
+        <div class="stats result">
+            <div class="close" onclick="closeResult()">
+                <div></div>
+                <div></div>
+            </div>
+            <h1 id="victoryTitle">{{victoryTitle}}</h1>
+            <p id="victoryDesc">You were able to find the word only on the {{lineName}} line.</p>
+            <textarea id="clipboard" value=""></textarea>
+
+            <div class="hr"></div>
+
+            <div class="emotes" id="emotes">
+                <span>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </span>
+                <span>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </span><span>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </span><span>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </span><span>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </span>
+            </div>
+
+            <button onclick="copyResults()">Copy to Clipboard</button>
         </div>
-        <h1>Well Done!</h1>
-        <p>You were able to find the word only on the 2nd line.</p>
-
-        <div class="hr"></div>
-
-        <div class="emotes">
-            <span>
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-            </span>
-            <span>
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-            </span><span>
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-            </span><span>
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-            </span><span>
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-            </span>
-        </div>
-
-        <button>Copy to Clipboard</button>
     </div>
     
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-    <script language="JavaScript" src="script.js" charset="utf-8"></script>
+    <script language="JavaScript" src="script.js" defer charset="utf-8"></script>
 </body>
 </html>
