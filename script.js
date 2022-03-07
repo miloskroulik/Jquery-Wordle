@@ -5,18 +5,23 @@ var random = words[getRndInteger(0,words.length)].toUpperCase();
 
 const word = Array.from(random);
 
-let line = 1;
+let line = 1, lPoints = 0, locationWord = 0;
 var span = $('.row:nth-child('+line+') span');
 var result = $('.result');
 
-var matchStats = false;
+// NÚMERO DE QUADRADOS E DE LINHAS
+let squaresNum = $('.container .row:nth-child(1) div').length;
+let linesNum = $('.container .row').length;
+
+var matchStats = 'running';
 
 var clipboard;
 
 const results = [];
 
+// LÊ O CLIQUE DO USUÁRIO E PASSA A INFORMAÇÃO
 function keyboardClick(key){
-    if(matchStats == false){
+    if(matchStats == 'running'){
         var text = key.toUpperCase();
 
         keyboardType(0,text);
@@ -24,20 +29,27 @@ function keyboardClick(key){
 }
 
 function keyboardType(number,text){
-    if(span.eq(number).text() == ''){
+    // VERIFICA QUAL A LOCALIZAÇÃO DA PRÓXIMA PALAVRA (EVITAR ERRO NO CONSOLE)
+    if(locationWord == 5){
+        return false;
+    }
+    else if(span.eq(number).text() == ''){
         span[number].innerHTML = text;
+        locationWord = locationWord + 1;
     }
     else{
+        locationWord = 0;
         var number = number + 1;
         keyboardType(number,text);
     }
 }
 
+// DELETE O ÚLTIMO CARACTERE DIGITADO
 function keyboardDelete(){
     const arr = [];
     let a;
 
-    for(let i = 0; i < 5; i++){
+    for(let i = 0; i < squaresNum; i++){
         arr.push(span.eq(i).text());
     }
 
@@ -45,7 +57,7 @@ function keyboardDelete(){
 
     filtered = filtered.slice(-1)[0];
 
-    for(let i = 0; i < 5; i++){
+    for(let i = 0; i < squaresNum; i++){
         
         switch(i){
             case 0:
@@ -67,23 +79,33 @@ function keyboardDelete(){
 
         if(span.eq(a).text() == filtered){
             span.eq(a).text("");
+            locationWord = locationWord - 1;
             break;
         }
     }
 }
 
+// LÊ TUDO QUE O USUÁRIO ESCREVEU, VERIFICA, VALIDA E PASSA ADIANTE
 function keyboardEnter(){
-    const arr = [];
+    const arr = [], errorWord = [];
 
     // ANALISA O VALOR COLOCADO PELO USUÁRIO
-    for(let i = 0; i < 5; i++){
+    for(let i = 0; i < squaresNum; i++){
         arr.push(span.eq(i).text());
     }
 
+    // PEGA TODAS LETRAS DIGITADAS
     var filtered = arr.filter(Boolean);
+
+    // VERIFICA SE EXISTE ESSA PALAVRA NO VOCABULÁRIO
+    if(!words.includes(arr.join("").toLowerCase()) && matchStats == 'running' && filtered.length === 5){
+        getToast('word','Not in the word list!',3000);
+        return false;
+    }
+
     if(filtered.length === 5){
         // LOOP PARA VERIFICAR A PROCEDÊNCIA DOS RESULTADOS
-        for(let i = 0; i < 5; i++){
+        for(let i = 0; i < squaresNum; i++){
             if(arr[i] == word[i]){
                 // PALAVRA EXISTE E POSIÇÃO CORRETA
                 span.eq(i).css("background-color", "var(--correct)");
@@ -101,24 +123,66 @@ function keyboardEnter(){
                 span.eq(i).css("background-color", "var(--wrong)");
                 span.eq(i).attr('id', 'wrong');
                 results.push(1);
+
+                errorWord.push(arr[i]);
             }
         }
 
+        // MUDA A COR DAS TECLAS QUE JÁ FORAM UTILIZADAS
+        var keyboard = $('.keyboard .row div');
+        for(let a = 0; a < keyboard.length; a++){
+            // RETIRA O ENTER E O DELETE DO MAPA DO TECLADO
+            if(keyboard.eq(a).text() == "Enter" || keyboard.eq(a).text() == ""){
+            }
+            else{
+                for(let b = 0; b < errorWord.length; b++){
+                    if(errorWord[b] == keyboard.eq(a).text()){
+                        keyboard.eq(a).addClass('disable');
+                    }
+                }
+            }
+        }
+
+        // VERIFICA DERROTA OU VITÓRIA
         verifyVictory();
+        verifyLosse();
 
         // PASSAR PARA O PRÓXIMO LEVEL
         line = line + 1;
         span = $('.row:nth-child('+line+') span');
     }
     else{
-        console.log("Complete toda a linha");
+        // LINHA NÃO FOI COMPLETA
+        getToast('word','Complete the line!',3000);
     }
 }
 
+// VERIFICA A DERROTA
+function verifyLosse() {
+    const value = [];
+    var concat = '';
+
+    for(let i = 0; i < (squaresNum + 1); i++){
+        value[i] = $('.container .row div span').eq(i).text();
+        concat = concat+value[i];
+    }
+
+    if(concat !== random){
+        lPoints = lPoints + 1;
+    }
+
+    // CASO DERROTA MOSTRA AO USUÁRIO A REPOSTA POR UM TOAST
+    if(lPoints == 5){
+        getToast('word',random,15000);
+        matchStats = 'losse';
+    }
+}
+
+// VERIFICA VITÓRIA
 function verifyVictory() {
     // CONTA A QUANTIDADE DE PONTOS QUE O USUÁRIO CONSEGUIU (1 PONTO = 1 LINHA)
     let vPoints = 0;
-    for(let i = 0; i < 5; i++){
+    for(let i = 0; i < linesNum; i++){
         if(span.eq(i).attr('id') == 'correct'){
             vPoints = vPoints + 1;
         }
@@ -220,7 +284,7 @@ function verifyVictory() {
         result.css('display', 'grid');
 
         // SETA O STATUS DA PARTIDA COMO VITÓRIA
-        matchStats = true;
+        matchStats = 'win';
     }
 }
 
@@ -234,11 +298,11 @@ function copyResults(){
 }
 
 
-// VERIFY PERSONAL KEYBOARD CLICKS
+// VIRIFICA O CLIQUES DO TECLADO
 document.addEventListener("keydown", function(event) {
     event.preventDefault();
     switch (event.which) {
-        // ALPHABET KEY IDS
+        // ID DAS TECLAS DO ALFABETO
         case 65:
             keyboardClick("A");
             break;
@@ -332,6 +396,16 @@ document.addEventListener("keydown", function(event) {
     }
 })
 
+// PEGA UM VALOR ALEATÓRIO COM MINIMO E MAXIMO
 function getRndInteger(min, max) {
     return Math.floor(Math.random() * (max - min) ) + min;
+}
+
+// ENVIA O TOAST COM A MENSAGEM ESCOLHIDA NA TELA
+function getToast(replace,text,time){
+    $('#toast p').text($('#toast p').text().replace('{{'+replace+'}}', text));
+
+    $('#toast').css("display", "grid");
+
+    setTimeout(function() { $('#toast').css("display", "none");  $('#toast p').text($('#toast p').text().replace(text, '{{'+replace+'}}')); }, time);
 }

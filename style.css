@@ -6,6 +6,7 @@
     --charcoal: #4a4a4a;
     --dim-gray: #6d6d6d;
     --gainsboro: #e6e6e6;
+    --disable: #333333;
 
     --correct: #0fff5f7f;
     --middle: #ffff007f;
@@ -84,6 +85,10 @@ body{
 }
 .keyboard > .row > .command{
     width: 70px;
+}
+.disable{
+    background-color: var(--disable) !important;
+    cursor: inherit !important;
 }
 
 .stats{
@@ -232,4 +237,38 @@ body{
 }
 .result{
     display: none;
+}
+
+.toast{
+    width: 100vw;
+
+    position: fixed;
+    top: 0;
+    left: 0;
+
+    display: none;
+    justify-content: center;
+    justify-items: center;
+    z-index: 4;
+
+    animation-duration: .5s;
+    animation-name: toast;
+}
+.toast div{
+    max-width: 80vw;
+    margin-top: 10px;
+    background-color: var(--gainsboro);
+    padding: 0px 20px;
+    border-radius: 5px;
+
+    font-weight: 900;
+}
+
+@keyframes toast {
+    from{
+        transform: translateY(-100vh);
+    }
+    to{
+        transform: translateY(0);
+    }
 }
