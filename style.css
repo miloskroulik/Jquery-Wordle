@@ -19,6 +19,8 @@ body{
     background-color: var(--nero);
     white-space: normal;
     overflow-wrap: break-word;
+    margin: 0;
+    padding: 0;
 }
 
 .container{
