@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wordle - A Word Game</title>
+    <title>Palavrinha - A Word Game</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://kit.fontawesome.com/0beb279be2.js" crossorigin="anonymous"></script>
 </head>
@@ -15,6 +15,23 @@
     <div class="toast" id="toast">
         <div>
             <p>{{word}}</p>
+        </div>
+    </div>
+
+    <div class="selectLanguage">
+        <div class="selected" onclick="changeDisplay('languages')">
+            <img src="./assets/unitedstates.png" id="flag" alt="">
+        </div>
+
+        <div id="languages" class="invisible">
+            <div class="select" onclick="changeLanguage('english')">
+                <img id="english" src="./assets/unitedstates.png" alt="">
+                <p>English</p>
+            </div>
+            <div class="select" onclick="changeLanguage('portuguese')">
+                <img id="portuguese" src="./assets/brazil.png" alt="">
+                <p>Portuguese</p>
+            </div>
         </div>
     </div>
 
@@ -112,46 +129,46 @@
 
     <div class="keyboard">
         <div class="row">
-            <div onclick="keyboardClick('q')">Q</div>
-            <div onclick="keyboardClick('w')">W</div>
-            <div onclick="keyboardClick('e')">E</div>
-            <div onclick="keyboardClick('r')">R</div>
-            <div onclick="keyboardClick('t')">T</div>
-            <div onclick="keyboardClick('y')">Y</div>
-            <div onclick="keyboardClick('u')">U</div>
-            <div onclick="keyboardClick('i')">I</div>
-            <div onclick="keyboardClick('o')">O</div>
-            <div onclick="keyboardClick('p')">P</div>
+            <div class="keyboard-button" button-value="q">Q</div>
+            <div class="keyboard-button" button-value="w">W</div>
+            <div class="keyboard-button" button-value="e">E</div>
+            <div class="keyboard-button" button-value="r">R</div>
+            <div class="keyboard-button" button-value="t">T</div>
+            <div class="keyboard-button" button-value="y">Y</div>
+            <div class="keyboard-button" button-value="u">U</div>
+            <div class="keyboard-button" button-value="i">I</div>
+            <div class="keyboard-button" button-value="o">O</div>
+            <div class="keyboard-button" button-value="p">P</div>
         </div>
 
         <div class="row">
-            <div onclick="keyboardClick('a')">A</div>
-            <div onclick="keyboardClick('s')">S</div>
-            <div onclick="keyboardClick('d')">D</div>
-            <div onclick="keyboardClick('f')">F</div>
-            <div onclick="keyboardClick('g')">G</div>
-            <div onclick="keyboardClick('h')">H</div>
-            <div onclick="keyboardClick('j')">J</div>
-            <div onclick="keyboardClick('k')">K</div>
-            <div onclick="keyboardClick('l')">L</div>
+            <div class="keyboard-button" button-value="a">A</div>
+            <div class="keyboard-button" button-value="s">S</div>
+            <div class="keyboard-button" button-value="d">D</div>
+            <div class="keyboard-button" button-value="f">F</div>
+            <div class="keyboard-button" button-value="g">G</div>
+            <div class="keyboard-button" button-value="h">H</div>
+            <div class="keyboard-button" button-value="j">J</div>
+            <div class="keyboard-button" button-value="k">K</div>
+            <div class="keyboard-button" button-value="l">L</div>
         </div>
 
         <div class="row">
-            <div class="command" id="enter" onclick="keyboardEnter()">Enter</div>
-            <div onclick="keyboardClick('z')">Z</div>
-            <div onclick="keyboardClick('x')">X</div>
-            <div onclick="keyboardClick('c')">C</div>
-            <div onclick="keyboardClick('v')">V</div>
-            <div onclick="keyboardClick('b')">B</div>
-            <div onclick="keyboardClick('n')">N</div>
-            <div onclick="keyboardClick('m')">M</div>
-            <div class="command" id="delete" onclick="keyboardDelete()"><i class="fa-solid fa-delete-left"></i></div>
+            <div class="command keyboard-function" id="enter" button-function="enter">Enter</div>
+            <div class="keyboard-button" button-value="z">Z</div>
+            <div class="keyboard-button" button-value="x">X</div>
+            <div class="keyboard-button" button-value="c">C</div>
+            <div class="keyboard-button" button-value="v">V</div>
+            <div class="keyboard-button" button-value="b">B</div>
+            <div class="keyboard-button" button-value="n">N</div>
+            <div class="keyboard-button" button-value="m">M</div>
+            <div class="command keyboard-function" id="delete" button-function="delete"><i class="fa-solid fa-delete-left"></i></div>
         </div>
     </div>
 
     <div class="wrapper result">
         <div class="stats result">
-            <div class="close" onclick="closeResult()">
+            <div class="close keyboard-function" button-function="closeResult">
                 <div></div>
                 <div></div>
             </div>
@@ -196,7 +213,7 @@
                 </span>
             </div>
 
-            <button onclick="copyResults()">Copy to Clipboard</button>
+            <button class="keyboard-function" button-function="copyResult">Copy to Clipboard</button>
         </div>
     </div>
     
