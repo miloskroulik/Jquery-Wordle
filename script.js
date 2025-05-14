@@ -5,8 +5,8 @@ function findGetParameter(parameterName) {
         .substr(1)
         .split("&")
         .forEach(function (item) {
-          tmp = item.split("=");
-          if (tmp[0] === parameterName) result = decodeURIComponent(tmp[1]);
+            tmp = item.split("=");
+            if (tmp[0] === parameterName) result = decodeURIComponent(tmp[1]);
         });
     return result;
 }
@@ -23,17 +23,17 @@ switch (findGetParameter('l')) {
         break;
 }
 
-$.getJSON("words/"+language+".json", function(data){
+$.getJSON("words/" + language + ".json", function (data) {
     var words = data.Words;
-    var random = words[getRndInteger(0,words.length)].toUpperCase();
+    var random = words[getRndInteger(0, words.length)].toUpperCase();
     const word = Array.from(random);
-    console.log(random+' | '+language);
+    console.log(random + ' | ' + language);
 
     let line = 1, lPoints = 0, locationWord = 0;
-    var span = $('.row:nth-child('+line+') span');
+    var span = $('.row:nth-child(' + line + ') span');
     var result = $('.result');
 
-    // NÚMERO DE QUADRADOS E DE LINHAS
+    // NUMBER OF SQUARES AND LINES 
     let squaresNum = $('.container .row:nth-child(1) div').length;
     let linesNum = $('.container .row').length;
 
@@ -44,37 +44,37 @@ $.getJSON("words/"+language+".json", function(data){
 
     const results = [];
 
-    // LÊ O CLIQUE DO USUÁRIO E PASSA A INFORMAÇÃO
-    function keyboardClick(key){
-        if(matchStats == 'running'){
+    // READS THE USER'S CLICK AND PASSES THE INFORMATION
+    function keyboardClick(key) {
+        if (matchStats == 'running') {
             var text = key.toUpperCase();
 
-            keyboardType(0,text);
+            keyboardType(0, text);
         }
     }
 
-    function keyboardType(number,text){
-        // VERIFICA QUAL A LOCALIZAÇÃO DA PRÓXIMA PALAVRA (EVITAR ERRO NO CONSOLE)
-        if(locationWord == 5){
+    function keyboardType(number, text) {
+        // CHECK THE LOCATION OF THE NEXT WORD (AVOID CONSOLE ERROR)
+        if (locationWord == 5) {
             return false;
         }
-        else if(span.eq(number).text() == ''){
+        else if (span.eq(number).text() == '') {
             span[number].innerHTML = text;
             locationWord = locationWord + 1;
         }
-        else{
+        else {
             locationWord = 0;
             var number = number + 1;
-            keyboardType(number,text);
+            keyboardType(number, text);
         }
     }
 
-    // DELETE O ÚLTIMO CARACTERE DIGITADO
-    function keyboardDelete(){
+    // DELETE THE LAST CHARACTER TYPETED 
+    function keyboardDelete() {
         const arr = [];
         let a;
 
-        for(let i = 0; i < squaresNum; i++){
+        for (let i = 0; i < squaresNum; i++) {
             arr.push(span.eq(i).text());
         }
 
@@ -82,9 +82,9 @@ $.getJSON("words/"+language+".json", function(data){
 
         filtered = filtered.slice(-1)[0];
 
-        for(let i = 0; i < squaresNum; i++){
-            
-            switch(i){
+        for (let i = 0; i < squaresNum; i++) {
+
+            switch (i) {
                 case 0:
                     a = 4;
                     break;
@@ -102,7 +102,7 @@ $.getJSON("words/"+language+".json", function(data){
                     break;
             }
 
-            if(span.eq(a).text() == filtered){
+            if (span.eq(a).text() == filtered) {
                 span.eq(a).text("");
                 locationWord = locationWord - 1;
                 break;
@@ -110,41 +110,41 @@ $.getJSON("words/"+language+".json", function(data){
         }
     }
 
-    // LÊ TUDO QUE O USUÁRIO ESCREVEU, VERIFICA, VALIDA E PASSA ADIANTE
-    function keyboardEnter(){
+    // READS EVERYTHING THE USER WROTE, CHECKS, VALIDATES AND PASSES IT ON
+    function keyboardEnter() {
         const arr = [], errorWord = [];
 
-        // ANALISA O VALOR COLOCADO PELO USUÁRIO
-        for(let i = 0; i < squaresNum; i++){
+        // ANALYZES THE VALUE ENTERED BY THE USER
+        for (let i = 0; i < squaresNum; i++) {
             arr.push(span.eq(i).text());
         }
 
-        // PEGA TODAS LETRAS DIGITADAS
+        // GET ALL THE LETTERS TYPED
         var filtered = arr.filter(Boolean);
 
-        // VERIFICA SE EXISTE ESSA PALAVRA NO VOCABULÁRIO
-        if(!words.includes(arr.join("").toLowerCase()) && matchStats == 'running' && filtered.length === 5){
-            getToast('word','Not in the word list!',3000);
+        // CHECK IF THIS WORD EXISTS IN THE VOCABULARY
+        if (!words.includes(arr.join("").toLowerCase()) && matchStats == 'running' && filtered.length === 5) {
+            getToast('word', 'Not in the word list!', 3000);
             return false;
         }
 
-        if(filtered.length === 5){
-            // LOOP PARA VERIFICAR A PROCEDÊNCIA DOS RESULTADOS
-            for(let i = 0; i < squaresNum; i++){
-                if(arr[i] == word[i]){
-                    // PALAVRA EXISTE E POSIÇÃO CORRETA
+        if (filtered.length === 5) {
+            // LOOP TO CHECK THE ORIGIN OF THE RESULTS
+            for (let i = 0; i < squaresNum; i++) {
+                if (arr[i] == word[i]) {
+                    // WORD EXISTS AND CORRECT POSITION
                     span.eq(i).css("background-color", "var(--correct)");
                     span.eq(i).attr('id', 'correct');
                     results.push(3);
                 }
-                else if(word.includes(arr[i]) && arr[i] !== word[i] && span.eq(i).attr('id') !== 'correct'){
-                    // PALAVRA EXISTE E POSIÇÃO ERRADA
+                else if (word.includes(arr[i]) && arr[i] !== word[i] && span.eq(i).attr('id') !== 'correct') {
+                    // WORD EXISTS AND WRONG POSITION 
                     span.eq(i).css("background-color", "var(--middle)");
                     span.eq(i).attr('id', 'middle');
                     results.push(2);
                 }
-                else{
-                    // PALAVRA NÃO EXISTE
+                else {
+                    // WORD DOES NOT EXIST 
                     span.eq(i).css("background-color", "var(--wrong)");
                     span.eq(i).attr('id', 'wrong');
                     results.push(1);
@@ -153,70 +153,68 @@ $.getJSON("words/"+language+".json", function(data){
                 }
             }
 
-            // MUDA A COR DAS TECLAS QUE JÁ FORAM UTILIZADAS
+            // CHANGES THE COLOR OF KEYS THAT HAVE ALREADY BEEN USED 
             var keyboard = $('.keyboard .row div');
-            for(let a = 0; a < keyboard.length; a++){
-                // RETIRA O ENTER E O DELETE DO MAPA DO TECLADO
-                if(keyboard.eq(a).text() == "Enter" || keyboard.eq(a).text() == ""){
+            for (let a = 0; a < keyboard.length; a++) {
+                // REMOVE ENTER AND DELETE FROM KEYBOARD MAP 
+                if (keyboard.eq(a).text() == "Enter" || keyboard.eq(a).text() == "") {
                 }
-                else{
-                    for(let b = 0; b < errorWord.length; b++){
-                        if(errorWord[b] == keyboard.eq(a).text()){
+                else {
+                    for (let b = 0; b < errorWord.length; b++) {
+                        if (errorWord[b] == keyboard.eq(a).text()) {
                             keyboard.eq(a).addClass('disable');
                         }
                     }
                 }
             }
 
-            // VERIFICA DERROTA OU VITÓRIA
+            // CHECK FOR LOSS OR VICTORY
             verifyVictory();
             verifyLosse();
 
-            // PASSAR PARA O PRÓXIMO LEVEL
+            // GO TO NEXT LEVEL
             line = line + 1;
-            span = $('.row:nth-child('+line+') span');
+            span = $('.row:nth-child(' + line + ') span');
         }
-        else{
-            // LINHA NÃO FOI COMPLETA
-            getToast('word','Complete the line!',3000);
+        else {
+            // LINE WAS NOT COMPLETE
+            getToast('word', 'Complete the line!', 3000);
         }
     }
 
-    // VERIFICA A DERROTA
+    // CHECK FOR LOSS
     function verifyLosse() {
         const value = [];
         var concat = '';
-
-        for(let i = 0; i < (squaresNum + 1); i++){
+        for (let i = 0; i < (squaresNum + 1); i++) {
             value[i] = $('.container .row div span').eq(i).text();
-            concat = concat+value[i];
+            concat = concat + value[i];
         }
 
-        if(concat !== random){
+        if (concat !== random) {
             lPoints = lPoints + 1;
         }
 
-        // CASO DERROTA MOSTRA AO USUÁRIO A REPOSTA POR UM TOAST
-        if(lPoints == 5){
-            getToast('word',random,15000);
+        // IN CASE OF LOSS, SHOW THE USER THE RESPONSE WITH A TOAST
+        if (lPoints == 5) {
+            getToast('word', random, 15000);
             matchStats = 'losse';
         }
     }
 
-    // VERIFICA VITÓRIA
+    // VERIFY VICTORY
     function verifyVictory() {
-        // CONTA A QUANTIDADE DE PONTOS QUE O USUÁRIO CONSEGUIU (1 PONTO = 1 LINHA)
-        let vPoints = 0;
-        for(let i = 0; i < linesNum; i++){
-            if(span.eq(i).attr('id') == 'correct'){
+        // COUNTS THE NUMBER OF POINTS THE USER GOT (1 POINT = 1 LINE)
+        let vPoints = 0; for (let i = 0; i < linesNum; i++) {
+            if (span.eq(i).attr('id') == 'correct') {
                 vPoints = vPoints + 1;
             }
         }
 
-        if(vPoints == 5){
+        if (vPoints == 5) {
             var lineName, victoryTitle;
-            // SETA OS VALORES DE TÍTULO E LINHA ALCANÇADA
-            switch(line){
+            // SET THE TITLE AND LINE REACHED VALUES 
+            switch (line) {
                 case 1:
                     lineName = '1st';
                     victoryTitle = 'Congratulations! That was amazing.';
@@ -239,22 +237,22 @@ $.getJSON("words/"+language+".json", function(data){
                     break;
             }
 
-            // TROCA UM ELEMENTO DA DESCRIÇÃO PARA O NÚMERO DA LINHA QUE O ÚSUARIO ACERTOU
+            // CHANGES AN ELEMENT OF THE DESCRIPTION TO THE LINE NUMBER THAT THE USER GOT RIGHT
             $('#victoryDesc').text($('#victoryDesc').text().replace('{{lineName}}', lineName));
 
-            // TROCA O TITULO DEPENDENDO DO NÚMERO DA LINHA QUE O ÚSUARIO ACERTOU
+            // CHANGES THE TITLE DEPENDING ON THE LINE NUMBER THAT THE USER GOT RIGHT
             $('#victoryTitle').text($('#victoryTitle').text().replace('{{victoryTitle}}', victoryTitle));
 
             var squares = $('#emotes span div');
             const clipboardArr = [];
             var trimed;
 
-            for(i = 0; i < squares.length; i++){
-                // LIMPA ESPAÇOS EM BRANCO DO RESULTADO
-                trimed = clipboardArr.filter(function(entry) { return /\S/.test(entry); });
+            for (i = 0; i < squares.length; i++) {
+                // CLEAN WHITESPACE FROM THE RESULT
+                trimed = clipboardArr.filter(function (entry) { return /\S/.test(entry); });
 
-                // ADICIONA QUEBRA DE LINHA A CADA LINHA DO JOGO
-                switch(trimed.length){
+                // ADD LINE BREAK TO EACH LINE OF THE GAME
+                switch (trimed.length) {
                     case 5:
                         clipboardArr.push("\n");
                         break;
@@ -271,65 +269,64 @@ $.getJSON("words/"+language+".json", function(data){
                         clipboardArr.push("\n");
                         break;
                     case 30:
-                        clipboardArr.push("\n");
-                        break;
+                        clipboardArr.push("\n"); break;
                 }
 
-                // SETA A COR DOS SQUARES DO MENU DE RESULTADOS E ADICIONA O CÓDIGO DO RESULTADO
-                if(results[i] == 3){
+                // SET THE COLOR OF THE SQUARES IN THE RESULTS MENU AND ADD THE RESULT CODE 
+                if (results[i] == 3) {
                     squares.eq(i).css("background-color", "var(--correct)");
                     clipboardArr.push(3);
                 }
-                else if(results[i] == 2){
+                else if (results[i] == 2) {
                     squares.eq(i).css("background-color", "var(--middle)");
                     clipboardArr.push(2);
                 }
-                else if(results[i] == 1){
+                else if (results[i] == 1) {
                     squares.eq(i).css("background-color", "var(--wrong)");
                     clipboardArr.push(1);
                 }
-                else{
+                else {
                     squares.eq(i).css("display", "none");
                 }
             }
 
-            // SUBSTITUI OS CÓDIGOS PELOS EMOTES
+            // REPLACE THE CODES WITH THE EMOTES
             clipboard = clipboardArr.join("").trim();
-            clipboard = clipboard.replaceAll("1","⬛");
-            clipboard = clipboard.replaceAll("2","🟨");
-            clipboard = clipboard.replaceAll("3","🟩");
-            
-            // TEXTO DE DEVE SER COPIADO
-            clipboard = "Palavrinha "+line+"/"+$('.container .row').length+"\n\n"+clipboard;
+            clipboard = clipboard.replaceAll("1", "⬛");
+            clipboard = clipboard.replaceAll("2", "🟨");
+            clipboard = clipboard.replaceAll("3", "🟩");
 
-            // SETA O INPUT INVISÍVEL COM O VALOR DO QUE DEVE SER COPIADO
+            // TEXT THAT SHOULD BE COPIED
+            clipboard = "Word " + line + "/" + $('.container .row').length + "\n\n" + clipboard;
+
+            // SET THE INVISIBLE INPUT WITH THE VALUE OF WHAT SHOULD BE COPIED
             $('#clipboard').val(clipboard);
 
-            // DEIXA O MENU DE RESULTADOS INVISÍVEL
+            // MAKES THE RESULTS MENU INVISIBLE 
             result.css('display', 'grid');
 
-            // SETA O STATUS DA PARTIDA COMO VITÓRIA
+            // SET THE MATCH STATUS AS WIN 
             matchStats = 'win';
         }
     }
 
-    function closeResult(){
+    function closeResult() {
         result.css('display', 'none');
     }
 
-    function copyResults(){
+    function copyResults() {
         $('#clipboard').select();
         document.execCommand('copy');
     }
 
-    $('.keyboard-button').each(function(){
-        $(this).on('click', function(){
+    $('.keyboard-button').each(function () {
+        $(this).on('click', function () {
             keyboardClick($(this).attr('button-value'));
         })
     });
-    $('.keyboard-function').each(function(){
-        $(this).on('click', function(){
-            switch($(this).attr('button-function')) {
+    $('.keyboard-function').each(function () {
+        $(this).on('click', function () {
+            switch ($(this).attr('button-function')) {
                 case 'delete':
                     keyboardDelete();
                     break;
@@ -346,11 +343,11 @@ $.getJSON("words/"+language+".json", function(data){
         })
     });
 
-    // VIRIFICA O CLIQUES DO TECLADO
-    document.addEventListener("keydown", function(event) {
+    // FIX KEYBOARD CLICKS 
+    document.addEventListener("keydown", function (event) {
         event.preventDefault();
         switch (event.which) {
-            // ID DAS TECLAS DO ALFABETO
+            // ALPHABET KEY ID 
             case 65:
                 keyboardClick("A");
                 break;
@@ -430,56 +427,56 @@ $.getJSON("words/"+language+".json", function(data){
                 keyboardClick("Z");
                 break;
             case 8:
-                // DELETE ID
+                // DELETE ID 
                 keyboardDelete();
                 break;
             case 13:
-                // ENTER ID
+                // ENTER ID 
                 keyboardEnter();
                 break;
             case 116:
-                // RELOAD PAGE IN f5
+                // RELOAD PAGE IN f5 
                 location.reload();
                 break;
         }
     })
 
-    // PEGA UM VALOR ALEATÓRIO COM MINIMO E MAXIMO
+    // GET A RANDOM VALUE WITH MINIMUM AND MAXIMUM 
     function getRndInteger(min, max) {
-        return Math.floor(Math.random() * (max - min) ) + min;
+        return Math.floor(Math.random() * (max - min)) + min;
     }
 
-    // ENVIA O TOAST COM A MENSAGEM ESCOLHIDA NA TELA
-    function getToast(replace,text,time){
-        $('#toast p').text($('#toast p').text().replace('{{'+replace+'}}', text));
+    // SEND THE TOAST WITH THE MESSAGE CHOSEN ON THE SCREEN 
+    function getToast(replace, text, time) {
+        $('#toast p').text($('#toast p').text().replace('{{' + replace + '}}', text));
 
         $('#toast').css("display", "grid");
 
-        setTimeout(function() { $('#toast').css("display", "none");  $('#toast p').text($('#toast p').text().replace(text, '{{'+replace+'}}')); }, time);
+        setTimeout(function () { $('#toast').css("display", "none"); $('#toast p').text($('#toast p').text().replace(text, '{{' + replace + '}}')); }, time);
     }
 });
 
-function changeDisplay(id){
-    var obj = $('#'+id);
+function changeDisplay(id) {
+    var obj = $('#' + id);
 
-    if(obj.hasClass('invisible')){
+    if (obj.hasClass('invisible')) {
         obj.removeClass('invisible');
-    }else{
+    } else {
         obj.addClass('invisible');
     }
 }
 
-function changeLanguage(l){
-    window.location = window.location.origin+window.location.pathname+'?l='+l;
+function changeLanguage(l) {
+    window.location = window.location.origin + window.location.pathname + '?l=' + l;
 }
 
-$(document).ready(function(){
+$(document).ready(function () {
     var country;
-    if(findGetParameter('l') == 'portuguese'){
+    if (findGetParameter('l') == 'english') {
         country = 'brazil';
-    }else if(findGetParameter('l') == 'english'){
+    } else if (findGetParameter('l') == 'english') {
         country = 'unitedstates'
-    }else{
+    } else {
         country = 'unitedstates'
     }
     $('#flag').attr('src', $('#flag').attr('src').replace('unitedstates', country));
